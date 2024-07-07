@@ -3,7 +3,7 @@ import argparse
 import time
 
 
-class led:
+class Led:
     def __init__(self, name, LED_COUNT=30, LED_PIN=18, LED_FREQ_HZ=800000, LED_DMA=10, LED_BRIGHTNESS=65,
                  LED_INVERT=False, LED_CHANNEL=0):
         # PWM0_0 available on GPIO 12, 18 or 52.
