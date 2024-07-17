@@ -1,4 +1,5 @@
 import tkinter as tk
+from door import Door
 from PIL import Image, ImageTk
 from ledControl import LedControlApp
 
@@ -85,6 +86,10 @@ class CarPlayApp(tk.Tk):
         self.grid_frame.pack(expand=True)
 
 if __name__ == "__main__":
+    door1 = Door()
+    door1.set(name = "Car Door", sensor_pin = 17)
+    door1.start()
     app = CarPlayApp()
     app.mainloop()
+    # Replace 3 with actual GPIO pin
 
