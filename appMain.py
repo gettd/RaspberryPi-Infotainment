@@ -1,5 +1,6 @@
 import tkinter as tk
 from PIL import Image, ImageTk
+from ledControl import LedControlApp
 
 class CarPlayApp(tk.Tk):
     def __init__(self):
@@ -11,7 +12,6 @@ class CarPlayApp(tk.Tk):
         
         self.grid_frame=None
         self.content_frames ={}
-        
         self.create_widgets()
     
     def create_widgets(self):
@@ -65,16 +65,19 @@ class CarPlayApp(tk.Tk):
     
     def open_app(self, app_name):
         print(f"Opening {app_name}...")
-        self.grid_frame.pack_forget()
-        self.content_frames[app_name].pack(fill="both", expand=True)
+        for widget in self.grid_frame.winfo_children():
+            widget.destroy()
+        
+        if app_name == "Ambient Light":
+            LedControlApp(self.grid_frame).grid(row=0, column=0, sticky="nsew")
     
     def create_content_frame(self, app_name):
-        frame = tk.Frame(self, bg="black")
-        label = tk.Label(frame, text=f"{app_name} App", fg="white", bg="black", font=("Arial", 24))
-        label.pack(expand=True)
-        back_button = tk.Button(frame, text="Back", command=self.show_main_grid, bg="black", fg="white", font=("Arial", 14))
-        back_button.pack(pady=100)
-        return frame
+            frame = tk.Frame(self, bg="black")
+            label = tk.Label(frame, text=f"{app_name} App", fg="white", bg="black", font=("Arial", 24))
+            label.pack(expand=True)
+            back_button = tk.Button(frame, text="Back", command=self.show_main_grid, bg="white", fg="black", font=("Arial", 14))
+            back_button.pack(pady=100)
+            return frame
     
     def show_main_grid(self):
         for frame in self.content_frames.values():

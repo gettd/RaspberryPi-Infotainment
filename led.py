@@ -19,24 +19,26 @@ class Led:
         self.strip = Adafruit_NeoPixel(LED_COUNT, LED_PIN, LED_FREQ_HZ, LED_DMA, LED_INVERT, LED_BRIGHTNESS,
                                        LED_CHANNEL)
         self.strip.begin()
+        self.color = Color(0,0,0)
 
-    def colorWipe(self, color, wait_ms=50):
+    def colorWipe(self, wait_ms=50):
         """Wipe color across display a pixel at a time."""
         for i in range(self.strip.numPixels()):
-            self.strip.setPixelColor(i, color)
+            self.strip.setPixelColor(i, self.color)
             self.strip.show()
             time.sleep(wait_ms / 1000.0)
 
-    def theaterChase(self, color, wait_ms=50, iterations=10):
+    def theaterChase(self, wait_ms=50, iterations=10):
         """Movie theater light style chaser animation."""
-        for j in range(iterations):
-            for q in range(3):
-                for i in range(0, self.strip.numPixels(), 3):
-                    self.strip.setPixelColor(i + q, color)
-                self.strip.show()
-                time.sleep(wait_ms / 1000.0)
-                for i in range(0, self.strip.numPixels(), 3):
-                    self.strip.setPixelColor(i + q, 0)
+        while True:
+            for j in range(iterations):
+                for q in range(3):
+                    for i in range(0, self.strip.numPixels(), 3):
+                        self.strip.setPixelColor(i + q, self.color)
+                    self.strip.show()
+                    time.sleep(wait_ms / 1000.0)
+                    for i in range(0, self.strip.numPixels(), 3):
+                        self.strip.setPixelColor(i + q, 0)
 
     def wheel(self, pos):
         """Generate rainbow colors across 0-255 positions."""
