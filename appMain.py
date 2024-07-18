@@ -88,8 +88,11 @@ class CarPlayApp(tk.Tk):
 
 if __name__ == "__main__":
     door1 = Door()
-    door1.set(name = "Car Door", sensor_pin = 17, led_pin = 13)
+    door2 = Door()
+    door1.set(name = "Left Door", sensor_pin = 17, led_pin = 13)
     door1.start()
+    door2.set(name = "Right Door", sensor_pin = 27, led_pin = 19)
+    door2.start()
     app = CarPlayApp()
     app.mainloop()
 

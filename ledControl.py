@@ -12,7 +12,7 @@ class LedControlApp(tk.Frame):
         self.master = master
         self.parent = parent
         
-        self.led = Led(name="Ambient Light")
+        self.led = Led(name="Ambient Light", LED_COUNT = 110)
         
         # Create GUI components
         self.create_widgets()
