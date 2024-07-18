@@ -8,11 +8,7 @@ import multiprocessing
 class LedControlApp(tk.Frame):
     def __init__(self, master=None, parent=None):
         super().__init__(master)
-        #self.title("LED Control")
-        #self.geometry("800x480")
         self.configure(bg="white")
-        #self.pack_propagate(False)
-        #self.config(width=1024,height=600)
         self.master = master
         self.parent = parent
         

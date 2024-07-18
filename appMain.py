@@ -2,12 +2,13 @@ import tkinter as tk
 from door import Door
 from PIL import Image, ImageTk
 from ledControl import LedControlApp
+from camera import CameraApp
+import cv2
 
 class CarPlayApp(tk.Tk):
     def __init__(self):
         super().__init__()
         self.title("CarPlay Interface")
-        #self.geometry("800x480")
         self.geometry("1024x600")
         self.configure(bg="white")
         
@@ -16,7 +17,7 @@ class CarPlayApp(tk.Tk):
         
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure(0, weight=1)
-        #self.content_frames ={}
+        
         self.create_widgets()
     
     def create_widgets(self):
@@ -26,12 +27,12 @@ class CarPlayApp(tk.Tk):
         
         # List of apps
         apps = [
-            ("Media", "/home/egco/Desktop/InfotainmentApp/Icon/music.png"),
-            ("Navigation", "/home/egco/Desktop/InfotainmentApp/Icon/maps.png"),
-            ("Rear Camera", "/home/egco/Desktop/InfotainmentApp/Icon/camera.png"),
-            ("Browser", "/home/egco/Desktop/InfotainmentApp/Icon/safari.png"),
-            ("Ambient Light", "/home/egco/Desktop/InfotainmentApp/Icon/game-center.png"),
-            ("Settings", "/home/egco/Desktop/InfotainmentApp/Icon/settings.png"),
+            ("Media", "./Icon/music.png"),
+            ("Navigation", "./Icon/maps.png"),
+            ("Camera", "./Icon/camera.png"),
+            ("Browser", "./Icon/safari.png"),
+            ("Ambient Light", "./Icon/game-center.png"),
+            ("Settings", "./Icon/settings.png"),
         ]
         
         # Create buttons for each app
@@ -68,11 +69,14 @@ class CarPlayApp(tk.Tk):
     
     def open_app(self, app_name):
         print(f"Opening {app_name}...")
-        for widget in self.grid_frame.winfo_children():
-            widget.destroy()
-        
         if app_name == "Ambient Light":
+            for widget in self.grid_frame.winfo_children():
+                widget.destroy()
             LedControlApp(self.grid_frame, parent=self).grid(row=0, column=0, sticky="nsew")
+        elif app_name == "Camera":
+            for widget in self.grid_frame.winfo_children():
+                widget.destroy()
+            CameraApp(self.grid_frame, parent=self).grid(row=0, column=0, sticky="nsew")
     
     
     def show_main_frame(self):
