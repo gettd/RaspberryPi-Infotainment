@@ -3,9 +3,10 @@ import time
 from threading import *
 
 class Door(Thread):
-    def set(self, name, sensor_pin):
+    def set(self, name, sensor_pin, led_pin):
         self.name = name
         self.sensor_pin = sensor_pin
+        self.led_pin = led_pin
 
     def door_close_callback(self, channel):
         if not GPIO.input(self.sensor_pin):  # Door opened
@@ -22,18 +23,23 @@ class Door(Thread):
         GPIO.cleanup()
         
     def run(self):
+        GPIO.setwarnings(False)
         GPIO.setmode(GPIO.BCM)
         GPIO.setup(self.sensor_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+        GPIO.setup(self.led_pin, GPIO.OUT)
         
         #GPIO.add_event_detect(self.sensor_pin, GPIO.FALLING, callback=self.door_close_callback, bouncetime=200)
         
         #print(f"Door sensor initialized for {self.name}. GPIO pin: {self.sensor_pin}")
         while True:
             if not GPIO.input(self.sensor_pin):
-                print('Door Close')
+                #print('Door Close')
+                GPIO.output(self.led_pin,GPIO.LOW)
             else:
-                print('Door open')
-            time.sleep(1)
+                #print('Door open')
+                GPIO.output(self.led_pin,GPIO.HIGH)
+                
+            #time.sleep(1)
 
 # Example usage:
 '''

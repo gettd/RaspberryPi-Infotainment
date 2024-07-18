@@ -11,14 +11,18 @@ class CarPlayApp(tk.Tk):
         self.geometry("1024x600")
         self.configure(bg="white")
         
-        self.grid_frame=None
-        self.content_frames ={}
+        self.grid_frame= tk.Frame(self,bg="white")
+        self.grid_frame.grid(row=0, column=0, sticky="nsew")
+        
+        self.grid_columnconfigure(0, weight=1)
+        self.grid_rowconfigure(0, weight=1)
+        #self.content_frames ={}
         self.create_widgets()
     
     def create_widgets(self):
         # Grid frame
         self.grid_frame = tk.Frame(self, bg="white")
-        self.grid_frame.pack(expand=True)
+        self.grid_frame.grid(row=0,column=0)
         
         # List of apps
         apps = [
@@ -37,9 +41,7 @@ class CarPlayApp(tk.Tk):
             button = self.create_app_button(self.grid_frame, app_name, icon_path)
             button.grid(row=row, column=col, padx=50, pady=50)
             
-        # Create content frames for each app
-        for app_name, _ in apps:
-            self.content_frames[app_name] = self.create_content_frame(app_name)
+       
     
     def create_app_button(self, parent, app_name, icon_path):                                  
         # Load and resize the icon
@@ -70,26 +72,21 @@ class CarPlayApp(tk.Tk):
             widget.destroy()
         
         if app_name == "Ambient Light":
-            LedControlApp(self.grid_frame).grid(row=0, column=0, sticky="nsew")
+            LedControlApp(self.grid_frame, parent=self).grid(row=0, column=0, sticky="nsew")
     
-    def create_content_frame(self, app_name):
-            frame = tk.Frame(self, bg="black")
-            label = tk.Label(frame, text=f"{app_name} App", fg="white", bg="black", font=("Arial", 24))
-            label.pack(expand=True)
-            back_button = tk.Button(frame, text="Back", command=self.show_main_grid, bg="white", fg="black", font=("Arial", 14))
-            back_button.pack(pady=100)
-            return frame
     
-    def show_main_grid(self):
-        for frame in self.content_frames.values():
-            frame.pack_forget()
-        self.grid_frame.pack(expand=True)
+    def show_main_frame(self):
+        self.grid_frame.grid(row=0, column=0, sticky="nsew")
+        for widget in self.grid_frame.winfo_children():
+            widget.destroy()
+        self.create_widgets()
+    
 
 if __name__ == "__main__":
     door1 = Door()
-    door1.set(name = "Car Door", sensor_pin = 17)
+    door1.set(name = "Car Door", sensor_pin = 17, led_pin = 13)
     door1.start()
     app = CarPlayApp()
     app.mainloop()
-    # Replace 3 with actual GPIO pin
+
 
